@@ -40,7 +40,7 @@ async def webhook(request: Request):
         
         diff = await get_pr_diff(repo, pr_number, GITHUB_TOKEN)
         
-        print('Sending to Claude...')
+        print('Sending to AI for review...')
         review = await review_pr(diff)
         
         comment = f'''## PR Roaster Review

@@ -1,19 +1,14 @@
-import anthropic
 import os
+import json
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.getenv('CLAUDE_API_KEY'))
+client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
 async def review_pr(diff: str) -> dict:
-    message = client.messages.create(
-        model='claude-sonnet-4-6',
-        max_tokens=1000,
-        messages=[
-            {
-                'role': 'user',
-                'content': f'''You are a senior engineer doing a code review in a fun roast style.
+    prompt = f'''You are a senior engineer doing a code review in a fun roast style.
 Review this PR diff and respond ONLY in this exact JSON format:
 {{
     "roast_score": <number 0-100, 100 being worst code>,
@@ -26,11 +21,13 @@ Review this PR diff and respond ONLY in this exact JSON format:
 PR Diff:
 {diff}
 
-Respond with JSON only. No extra text.'''
-            }
-        ]
+Respond with JSON only. No extra text. No markdown backticks.'''
+
+    response = client.chat.completions.create(
+        model='llama-3.3-70b-versatile',
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0
     )
     
-    import json
-    response_text = message.content[0].text
+    response_text = response.choices[0].message.content.strip()
     return json.loads(response_text)

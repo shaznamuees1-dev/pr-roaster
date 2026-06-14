@@ -15,7 +15,7 @@ async def get_pr_diff(repo: str, pr_number: int, token: str) -> str:
         'Accept': 'application/vnd.github.v3.diff'
     }
     async with httpx.AsyncClient() as client:
-        response = client.get(url, headers=headers)
+        response = await client.get(url, headers=headers)
         return response.text
 
 async def post_pr_comment(repo: str, pr_number: int, comment: str, token: str):
