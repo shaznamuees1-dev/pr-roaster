@@ -4,6 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# test function
+def add(a, b):
+    return a + b
+
 async def get_pr_diff(repo: str, pr_number: int, token: str) -> str:
     url = f'https://api.github.com/repos/{repo}/pulls/{pr_number}'
     headers = {
