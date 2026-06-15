@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-      GITHUB_WEBHOOK_SECRET: test_secret
-      GITHUB_TOKEN: test_token
+      GITHUB_WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 

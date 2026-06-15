@@ -1,4 +1,3 @@
-# Stage 1 — build stage
 FROM python:3.12-slim AS builder
 
 WORKDIR /app
@@ -6,7 +5,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Stage 2 — runtime stage
 FROM python:3.12-slim
 
 WORKDIR /app
@@ -15,7 +13,6 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY app/ ./app/
-COPY .env .
 
 EXPOSE 8000
 
