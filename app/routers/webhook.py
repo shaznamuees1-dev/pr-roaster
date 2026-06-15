@@ -6,6 +6,7 @@ import json
 from dotenv import load_dotenv
 from app.services.github import get_pr_diff, post_pr_comment
 from app.services.claude import review_pr
+from app.database import SessionLocal, Review
 
 load_dotenv()
 
@@ -37,7 +38,6 @@ async def webhook(request: Request):
         
         print(f'PR #{pr_number} opened on {repo}')
         print('Fetching diff...')
-        
         diff = await get_pr_diff(repo, pr_number, GITHUB_TOKEN)
         
         print('Sending to AI for review...')
@@ -62,8 +62,43 @@ _{review['summary']}_
 Powered by PR Roaster'''
         
         await post_pr_comment(repo, pr_number, comment, GITHUB_TOKEN)
-        print('Review posted!')
         
-        return {'message': 'Review posted successfully'}
+        # Save to database
+        db = SessionLocal()
+        db_review = Review(
+            repo=repo,
+            pr_number=pr_number,
+            roast_score=review['roast_score'],
+            summary=review['summary'],
+            critical=json.dumps(review['critical']),
+            warnings=json.dumps(review['warnings']),
+            suggestions=json.dumps(review['suggestions'])
+        )
+        db.add(db_review)
+        db.commit()
+        db.close()
+        print('Review saved to database!')
+        
+        return {'message': 'Review posted and saved successfully'}
     
     return {'message': 'Event ignored'}
+
+@router.get('/reviews')
+def get_reviews():
+    db = SessionLocal()
+    reviews = db.query(Review).order_by(Review.created_at.desc()).all()
+    db.close()
+    return [
+        {
+            'id': r.id,
+            'repo': r.repo,
+            'pr_number': r.pr_number,
+            'roast_score': r.roast_score,
+            'summary': r.summary,
+            'critical': json.loads(r.critical),
+            'warnings': json.loads(r.warnings),
+            'suggestions': json.loads(r.suggestions),
+            'created_at': r.created_at
+        }
+        for r in reviews
+    ]
