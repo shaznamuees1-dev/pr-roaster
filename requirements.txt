@@ -6,3 +6,5 @@ pytest
 anthropic
 groq
 sqlalchemy
+
+pytest-asyncio
