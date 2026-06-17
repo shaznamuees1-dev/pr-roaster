@@ -14,6 +14,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY app/ ./app/
 
-EXPOSE 8000
+ENV PORT=8080
+EXPOSE 8080
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT}
