@@ -29,3 +29,27 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t pr-roaster .
+
+  deploy-gcp:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy pr-roaster-backend \
+            --source . \
+            --region asia-southeast1 \
+            --allow-unauthenticated \
+            --project pr-roaster-shazna \
+            --set-env-vars GROQ_API_KEY=${{ secrets.GROQ_API_KEY }},GITHUB_TOKEN=${{ secrets.GH_TOKEN }},GITHUB_WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}
