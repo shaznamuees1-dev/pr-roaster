@@ -46,10 +46,4 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy pr-roaster-backend \
-            --source . \
-            --region asia-southeast1 \
-            --allow-unauthenticated \
-            --project pr-roaster-shazna \
-            --set-env-vars GROQ_API_KEY=${{ secrets.GROQ_API_KEY }},GITHUB_TOKEN=${{ secrets.GH_TOKEN }},GITHUB_WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}
+        run: gcloud run deploy pr-roaster-backend --source . --region asia-southeast1 --allow-unauthenticated --project pr-roaster-shazna --set-env-vars GROQ_API_KEY=${{ secrets.GROQ_API_KEY }},GITHUB_TOKEN=${{ secrets.GH_TOKEN }},GITHUB_WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}
