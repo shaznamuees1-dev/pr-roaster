@@ -2,11 +2,16 @@
 
 AI-powered GitHub PR reviewer that automatically analyzes pull requests and posts structured feedback — critical issues, warnings, and suggestions — as a comment, within seconds of the PR opening.
 
-**Live Demo (GCP Cloud Run):** https://pr-roaster-backend-1017399742306.asia-southeast1.run.app
-**Live Demo (AWS EC2):** http://13.212.169.213:8000
-**GitHub:** https://github.com/shaznamuees1-dev/pr-roaster
+##  User Interface Preview
 
-<img width="1920" height="968" alt="Screenshot 2026-06-25 162119" src="https://github.com/user-attachments/assets/31b22dc7-93bf-4e84-b372-8ae5ebb9ee64" />
+![PR Roaster Review History Dashboard](<img width="1920" height="968" alt="Screenshot 2026-06-25 162119" src="https://github.com/user-attachments/assets/31b22dc7-93bf-4e84-b372-8ae5ebb9ee64" />)
+
+###  Live Deployments & Source Code
+* **Frontend Web Application (UI):** [Live App Link](http://13.212.169.213:5173)
+* **GCP Cloud Run (Managed Serverless):** [Live Demo Link](https://pr-roaster-backend-1017399742306.asia-southeast1.run.app)
+* **AWS EC2 (Virtual Machine Engine):** [Live Demo Link](http://13.212.169.213:8000)
+* **Source Code:** [GitHub Repository](https://github.com/shaznamuees1-dev/pr-roaster)
+
 
 ---
 
