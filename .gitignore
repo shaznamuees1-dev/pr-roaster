@@ -9,3 +9,5 @@ __pycache__/
 reviews.db
 
 gcp-key.json
+
+platform-service/
